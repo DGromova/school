@@ -1,8 +1,10 @@
 package ru.hogwarts.school.service;
 
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.client.HttpClientErrorException;
 import ru.hogwarts.school.model.Student;
 
 import java.util.List;

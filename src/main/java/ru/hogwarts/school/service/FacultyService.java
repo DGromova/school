@@ -16,6 +16,7 @@ public class FacultyService {
     private Long generatedFacultyId = 1L;
 
     public Faculty createFaculty(Faculty faculty) {
+        faculty.setId(generatedFacultyId);
         faculties. put(generatedFacultyId, faculty);
         generatedFacultyId++;
         return faculty;

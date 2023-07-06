@@ -18,6 +18,7 @@ public class StudentService {
     private Long generatedStudentId = 1L;
 
     public Student createStudent(Student student) {
+        student.setId(generatedStudentId);
         students. put(generatedStudentId, student);
         generatedStudentId++;
         return student;
