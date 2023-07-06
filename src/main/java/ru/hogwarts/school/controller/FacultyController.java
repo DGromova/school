@@ -1,10 +1,9 @@
 package ru.hogwarts.school.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.service.FacultyService;
+import ru.hogwarts.school.service.FacultyServiceImpl;
 
 import java.util.List;
 
@@ -12,21 +11,21 @@ import java.util.List;
 @RequestMapping("/faculty")
 public class FacultyController {
 
-    private final FacultyService facultyService;
+    private final FacultyServiceImpl facultyServiceImpl;
 
-    public FacultyController(FacultyService facultyService) {
-        this.facultyService = facultyService;
+    public FacultyController(FacultyServiceImpl facultyServiceImpl) {
+        this.facultyServiceImpl = facultyServiceImpl;
     }
 
     @PostMapping
     public ResponseEntity createFaculty(@RequestBody Faculty faculty) {
-        Faculty createdfaculty = facultyService.createFaculty(faculty);
+        Faculty createdfaculty = facultyServiceImpl.createFaculty(faculty);
         return ResponseEntity.ok(createdfaculty);
     }
 
     @GetMapping("{studentId}")
     public ResponseEntity getFaculty(@PathVariable Long facultyId) {
-        Faculty faculty = facultyService.getFacultyById(facultyId);
+        Faculty faculty = facultyServiceImpl.getFacultyById(facultyId);
         if(faculty == null) {
             return ResponseEntity.notFound() .build();
         }
@@ -35,7 +34,7 @@ public class FacultyController {
 
     @GetMapping("{color}")
     public ResponseEntity getFacultyByColor(@PathVariable String color) {
-        List faculty = facultyService.getFacultyByColor(color);
+        List faculty = facultyServiceImpl.getFacultyByColor(color);
         if(faculty.isEmpty()) {
             return ResponseEntity.notFound() .build();
         }
@@ -44,13 +43,13 @@ public class FacultyController {
 
     @PutMapping()
     public ResponseEntity updateFaculty(@RequestBody Faculty faculty) {
-        Faculty updatedFaculty = facultyService.updateFaculty(faculty.getId(), faculty);
+        Faculty updatedFaculty = facultyServiceImpl.updateFaculty(faculty.getId(), faculty);
         return ResponseEntity.ok(updatedFaculty);
     }
 
     @DeleteMapping("{studentId}")
     public ResponseEntity deleteFaculty(@PathVariable Long facultyId) {
-        Faculty deletedFaculty = facultyService.deleteFaculty(facultyId);
+        Faculty deletedFaculty = facultyServiceImpl.deleteFaculty(facultyId);
         if(deletedFaculty == null) {
             return ResponseEntity.notFound() .build();
         }
