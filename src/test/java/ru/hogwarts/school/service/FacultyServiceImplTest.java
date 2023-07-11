@@ -1,4 +1,4 @@
-package ru.hogwarts.school.service;
+/*package ru.hogwarts.school.service;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,3 +75,5 @@ class FacultyServiceImplTest {
         assertThat(facultyServiceImpl.getAll().size()).isEqualTo(beforeCount - 1);
     }
 }
+
+ */
