@@ -13,18 +13,19 @@ import java.util.stream.Collectors;
 public class FacultyServiceImpl implements FacultyService{
     private final FacultyRepository facultyRepository;
 
-    public FacultyServiceImpl facultyService(FacultyRepository facultyRepository) {
+    public FacultyServiceImpl(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
     }
 
-//    private Map<Long, Faculty> faculties = new HashMap<>();
+    private Map<Long, Faculty> faculties = new HashMap<>();
 
-//    private Long generatedFacultyId = 1L;
+    private Long generatedFacultyId = 1L;
 
     public Faculty createFaculty(Faculty faculty) {
+//        facultyRepository.save(faculty);
         faculty.setId(generatedFacultyId);
         faculties. put(generatedFacultyId, faculty);
- //       generatedFacultyId++;
+        generatedFacultyId++;
         return faculty;
     }
 

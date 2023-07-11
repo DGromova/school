@@ -1,7 +1,8 @@
 package ru.hogwarts.school.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import nonapi.io.github.classgraph.json.Id;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.util.Objects;
 
