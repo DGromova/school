@@ -15,7 +15,7 @@ public class StudentServiceImpl implements StudentService {
 
     public FacultyServiceImpl facultyService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
-    }
+        }
 
     private Map<Long, Student> students = new HashMap<>();
 

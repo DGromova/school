@@ -17,14 +17,14 @@ public class FacultyServiceImpl implements FacultyService{
         this.facultyRepository = facultyRepository;
     }
 
-    private Map<Long, Faculty> faculties = new HashMap<>();
+//    private Map<Long, Faculty> faculties = new HashMap<>();
 
-    private Long generatedFacultyId = 1L;
+//    private Long generatedFacultyId = 1L;
 
     public Faculty createFaculty(Faculty faculty) {
         faculty.setId(generatedFacultyId);
         faculties. put(generatedFacultyId, faculty);
-        generatedFacultyId++;
+ //       generatedFacultyId++;
         return faculty;
     }
 
