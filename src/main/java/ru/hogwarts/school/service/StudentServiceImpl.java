@@ -17,40 +17,30 @@ public class StudentServiceImpl implements StudentService {
         this.studentRepository = studentRepository;
         }
 
-    private Map<Long, Student> students = new HashMap<>();
-
-    private Long generatedStudentId = 1L;
-
     public Student createStudent(Student student) {
-        student.setId(generatedStudentId);
-        students. put(generatedStudentId, student);
-        generatedStudentId++;
+        studentRepository.save(student);
         return student;
     }
 
-    public Student getStudentById(Long studentId) {
-        return students.get(studentId);
+    public Student findStudentById(Long studentId) {
+        return studentRepository.findById(studentId).get();
     }
 
     public List<Student> getStudentsByAge(int studentsAge) {
-        return students.values().stream()
+        return studentRepository.findAll().stream()
                 .filter(student -> studentsAge == student.getAge()).collect(Collectors.toUnmodifiableList());
     }
 
     public List<Student> getAll() {
-        return students.values().stream().collect(Collectors.toUnmodifiableList());
+        return studentRepository.findAll();
     }
 
-    public Student updateStudent(Long studentId, Student student) {
-        if(students.containsKey(studentId)) {
-            students.put(studentId, student);
-            return student;
-        }
-        return null;
+    public Student editStudent(Student student) {
+        return studentRepository.save(student);
     }
 
-    public Student deleteStudent(Long studentId) {
-        return students.remove(studentId);
+    public void deleteStudent(Long studentId) {
+        studentRepository.deleteById(studentId);
     }
 
 }

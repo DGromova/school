@@ -8,6 +8,7 @@ import java.util.Objects;
 
 @Entity
 public class Student {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -18,6 +19,10 @@ public class Student {
         this.id = id;
         this.name = name;
         this.age = age;
+    }
+
+    public Student() {
+
     }
 
     public Long getId() {

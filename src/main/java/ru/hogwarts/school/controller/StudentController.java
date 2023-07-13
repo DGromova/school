@@ -25,15 +25,15 @@ public class StudentController {
     }
 
     @GetMapping("{studentId}")
-    public ResponseEntity<Student> getStudent(@PathVariable Long studentId) {
-        Student student = studentServiceImpl.getStudentById(studentId);
+    public ResponseEntity findStudent(@PathVariable Long studentId) {
+        Student student = studentServiceImpl.findStudentById(studentId);
         if(student == null) {
             return ResponseEntity.notFound() .build();
         }
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("{studentsAge}")
+    @GetMapping("age/{studentsAge}")
     public ResponseEntity<Collection> getStudentsByAge(@PathVariable int studentsAge) {
         List<Student> studentsByAge = studentServiceImpl.getStudentsByAge(studentsAge);
         if(studentsByAge.isEmpty()) {
@@ -43,18 +43,15 @@ public class StudentController {
     }
 
     @PutMapping()
-    public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
-        Student updatedStudent = studentServiceImpl.updateStudent(student.getId(), student);
-        return ResponseEntity.ok(updatedStudent);
+    public ResponseEntity<Student> editStudent(@RequestBody Student student) {
+        Student editedStudent = studentServiceImpl.editStudent(student);
+        return ResponseEntity.ok(editedStudent);
     }
 
     @DeleteMapping("{studentId}")
-    public ResponseEntity<Student> deleteStudent(@PathVariable Long studentId) {
-        Student deletedStudent = studentServiceImpl.deleteStudent(studentId);
-        if(deletedStudent == null) {
-            return ResponseEntity.notFound() .build();
-        }
-        return ResponseEntity.ok(deletedStudent);
+    public ResponseEntity deleteStudent(@PathVariable Long studentId) {
+        studentServiceImpl.deleteStudent(studentId);
+        return ResponseEntity.ok().build();
     }
 
 }

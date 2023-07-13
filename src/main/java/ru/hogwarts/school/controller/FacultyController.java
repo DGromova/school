@@ -25,17 +25,23 @@ public class FacultyController {
     }
 
     @GetMapping("{facultyId}")
-    public ResponseEntity<Faculty> getFaculty(@PathVariable Long facultyId) {
-        Faculty faculty = facultyServiceImpl.getFacultyById(facultyId);
+    public ResponseEntity<Faculty> findFaculty(@PathVariable Long facultyId) {
+        Faculty faculty = facultyServiceImpl.findFacultyById(facultyId);
         if(faculty == null) {
             return ResponseEntity.notFound() .build();
         }
         return ResponseEntity.ok(faculty);
     }
 
-    @GetMapping("{color}")
-    public ResponseEntity<Collection> getFacultyByColor(@PathVariable String color) {
-        List faculty = facultyServiceImpl.getFacultyByColor(color);
+    @GetMapping
+    public ResponseEntity<Collection> findAll() {
+        Collection allAddedFaculties = List.copyOf(facultyServiceImpl.findAll());
+        return ResponseEntity.ok(allAddedFaculties);
+    }
+
+    @GetMapping("/color/{color}")
+    public ResponseEntity<Collection> findFacultiesByColor(@PathVariable String color) {
+        List faculty = facultyServiceImpl.findFacultiesByColor(color);
         if(faculty.isEmpty()) {
             return ResponseEntity.notFound() .build();
         }
@@ -43,21 +49,18 @@ public class FacultyController {
     }
 
     @PutMapping()
-    public ResponseEntity<Faculty> updateFaculty(@RequestBody Faculty faculty) {
-        Faculty updatedFaculty = facultyServiceImpl.updateFaculty(faculty.getId(), faculty);
-        if (updatedFaculty == null) {
+    public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
+        Faculty editedFaculty = facultyServiceImpl.editFaculty(faculty);
+        if (editedFaculty == null) {
             return ResponseEntity.notFound() .build();
         }
-        return ResponseEntity.ok(updatedFaculty);
+        return ResponseEntity.ok(editedFaculty);
     }
 
     @DeleteMapping("{facultyId}")
-    public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long facultyId) {
-        Faculty deletedFaculty = facultyServiceImpl.deleteFaculty(facultyId);
-        if(deletedFaculty == null) {
-            return ResponseEntity.notFound() .build();
-        }
-        return ResponseEntity.ok(deletedFaculty);
+    public ResponseEntity deleteFaculty(@PathVariable Long facultyId) {
+        facultyServiceImpl.deleteFaculty(facultyId);
+        return ResponseEntity.ok().build();
     }
 
 }

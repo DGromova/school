@@ -17,39 +17,32 @@ public class FacultyServiceImpl implements FacultyService{
         this.facultyRepository = facultyRepository;
     }
 
-    private Map<Long, Faculty> faculties = new HashMap<>();
-
-    private Long generatedFacultyId = 1L;
-
     public Faculty createFaculty(Faculty faculty) {
-//        facultyRepository.save(faculty);
-        faculty.setId(generatedFacultyId);
-        faculties. put(generatedFacultyId, faculty);
-        generatedFacultyId++;
+        facultyRepository.save(faculty);
         return faculty;
     }
 
-    public Faculty getFacultyById(Long facultyId) {
-        return faculties.get(facultyId);
+    public Faculty findFacultyById(Long facultyId) {
+        return facultyRepository.findById(facultyId).get();
     }
 
-    public List getFacultyByColor(String color) {
-        return faculties.values().stream()
-                .filter(faculty -> faculty.getColor() == color)
+    public List findFacultiesByColor(String color) {
+        return facultyRepository.findAll().stream()
+                .filter(faculty -> (faculty.getColor()).equals(color))
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public List<Faculty> getAll() {
-        return faculties.values().stream().collect(Collectors.toUnmodifiableList());
+    public List<Faculty> findAll() {
+        return facultyRepository.findAll();
     }
 
-    public Faculty updateFaculty(Long facultyId, Faculty faculty) {
-        faculties.put(facultyId, faculty);
+    public Faculty editFaculty(Faculty faculty) {
+        facultyRepository.save(faculty);
         return faculty;
     }
 
-    public Faculty deleteFaculty(Long facultyId) {
-        return faculties.remove(facultyId);
+    public void deleteFaculty(Long facultyId) {
+        facultyRepository.deleteById(facultyId);
     }
 
 }

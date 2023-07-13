@@ -3,24 +3,43 @@
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.repository.FacultyRepository;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class FacultyServiceImplTest {
 
-    private final FacultyServiceImpl facultyServiceImpl = new FacultyServiceImpl();
+    @Mock
+    FacultyRepository facultyRepositoryMock;
+
+    @InjectMocks
+    private FacultyServiceImpl out;
 
     @BeforeEach
     public void beforeEach() {
+
+        Map<Long, Faculty> facultiesMap = new HashMap<>();
+
         Faculty f1 = new Faculty(1L, "Гриффиндор", "красный");
         Faculty f2 = new Faculty(2L, "Слизерин", "зелёный");
         Faculty f3 = new Faculty(3L, "Когтевран", "синий");
 
-        facultyServiceImpl.createFaculty(f1);
-        facultyServiceImpl.createFaculty(f2);
-        facultyServiceImpl.createFaculty(f3);
+        facultiesMap.put(f1.getId(), f1);
+        facultiesMap.put(f2.getId(), f2);
+        facultiesMap.put(f3.getId(), f3);
+
     }
+
 
     @AfterEach
     public void afterEach() {
@@ -30,6 +49,9 @@ class FacultyServiceImplTest {
     @Test
     public void createFacultyTest() {
         Faculty expected = new Faculty(4L, "Пуффендуй", "жёлтый");
+
+        when(facultyRepositoryMock.save(expected)).thenReturn(expected);
+
         int beforeCount = facultyServiceImpl.getAll().size();
 
         assertThat(facultyServiceImpl.createFaculty(new Faculty(4L, "Пуффендуй", "жёлтый")))
@@ -39,29 +61,29 @@ class FacultyServiceImplTest {
     }
 
     @Test
-    public void getFacultyByIdTest() {
+    public void findFacultyByIdTest() {
         Faculty expected = new Faculty(1L, "Гриффиндор", "красный");
         int beforeCount = facultyServiceImpl.getAll().size();
 
-        assertThat(facultyServiceImpl.getFacultyById(1L)).isEqualTo(expected);
+        assertThat(facultyServiceImpl.findFacultyById(1L)).isEqualTo(expected);
         assertThat(facultyServiceImpl.getAll().size()).isEqualTo(beforeCount);
     }
 
     @Test
-    void getFacultyByColorTest() {
+    void findFacultyByColorTest() {
         Faculty expected = new Faculty(1L, "Гриффиндор", "красный");
         int beforeCount = facultyServiceImpl.getAll().size();
 
-        assertThat(facultyServiceImpl.getFacultyByColor("красный")).containsExactlyInAnyOrder(expected);
+        assertThat(facultyServiceImpl.findFacultiesByColor("красный")).containsExactlyInAnyOrder(expected);
         assertThat(facultyServiceImpl.getAll().size()).isEqualTo(beforeCount);
     }
 
     @Test
-    void updateFaculty() {
+    void editFaculty() {
         Faculty expected = new Faculty(1L, "Гриффиндор", "красный");
         int beforeCount = facultyServiceImpl.getAll().size();
 
-        assertThat(facultyServiceImpl.updateFaculty(1L, new Faculty(1L, "Гриффиндор", "красный"))).isEqualTo(expected);
+        assertThat(facultyServiceImpl.editFaculty(new Faculty(1L, "Гриффиндор", "красный"))).isEqualTo(expected);
         assertThat(facultyServiceImpl.getAll().size()).isEqualTo(beforeCount);
     }
 
@@ -70,10 +92,9 @@ class FacultyServiceImplTest {
         Faculty expected = new Faculty(1L, "Гриффиндор", "красный");
         int beforeCount = facultyServiceImpl.getAll().size();
 
-        assertThat(facultyServiceImpl.deleteFaculty(1L)).isEqualTo(expected)
-                .isNotIn(facultyServiceImpl.getAll());
+        facultyServiceImpl.deleteFaculty(1L);
+        assertThat(expected).isNotIn(facultyServiceImpl.getAll());
         assertThat(facultyServiceImpl.getAll().size()).isEqualTo(beforeCount - 1);
     }
 }
-
- */
+*/
