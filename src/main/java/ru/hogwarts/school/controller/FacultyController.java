@@ -3,6 +3,7 @@ package ru.hogwarts.school.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.service.FacultyServiceImpl;
 
 import java.util.Collection;
@@ -13,9 +14,11 @@ import java.util.List;
 public class FacultyController {
 
     private final FacultyServiceImpl facultyServiceImpl;
+    private final FacultyRepository facultyRepository;
 
-    public FacultyController(FacultyServiceImpl facultyServiceImpl) {
+    public FacultyController(FacultyServiceImpl facultyServiceImpl, FacultyRepository facultyRepository) {
         this.facultyServiceImpl = facultyServiceImpl;
+        this.facultyRepository = facultyRepository;
     }
 
     @PostMapping
@@ -43,7 +46,16 @@ public class FacultyController {
     public ResponseEntity<Collection> findFacultiesByColor(@PathVariable String color) {
         List faculty = facultyServiceImpl.findFacultiesByColor(color);
         if(faculty.isEmpty()) {
-            return ResponseEntity.notFound() .build();
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(faculty);
+    }
+
+    @GetMapping("/{name}/{color}")
+    public ResponseEntity<Collection> findFacultyByNameAndColor(@PathVariable String name, @PathVariable String color) {
+        List faculty = List.copyOf(facultyRepository.findByNameAndColorIgnoreCase(name, color));
+        if(faculty.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(faculty);
     }

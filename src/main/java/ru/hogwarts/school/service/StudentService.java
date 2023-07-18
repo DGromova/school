@@ -12,7 +12,7 @@ public interface StudentService {
 
     List<Student> getStudentsByAge(int studentsAge);
 
-    List<Student> getAll();
+    List<Student> findAll();
 
     Student editStudent(Student student);
 

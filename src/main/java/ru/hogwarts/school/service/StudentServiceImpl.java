@@ -1,9 +1,11 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +33,16 @@ public class StudentServiceImpl implements StudentService {
                 .filter(student -> studentsAge == student.getAge()).collect(Collectors.toUnmodifiableList());
     }
 
-    public List<Student> getAll() {
+    public List<Student> findAll() {
         return studentRepository.findAll();
+    }
+
+//    public Student findStudentByNameIgnoreCase(String studentName) {
+//        return studentRepository.findStudentByNameIgnoreCase(studentName);
+//    }
+
+    public Faculty findFacultyByStudentName(String studentName) {
+        return studentRepository.findStudentByNameIgnoreCase(studentName).getFaculty();
     }
 
     public Student editStudent(Student student) {

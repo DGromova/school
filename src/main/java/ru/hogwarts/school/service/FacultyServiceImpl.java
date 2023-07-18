@@ -36,6 +36,7 @@ public class FacultyServiceImpl implements FacultyService{
         return facultyRepository.findAll();
     }
 
+
     public Faculty editFaculty(Faculty faculty) {
         facultyRepository.save(faculty);
         return faculty;
