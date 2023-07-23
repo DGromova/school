@@ -13,6 +13,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     List<Student> findAllByAge(int age);
 
-    Student findStudentByNameIgnoreCase(String name);
+    List<Student> findAllByFaculty_Id(long id);
 
 }

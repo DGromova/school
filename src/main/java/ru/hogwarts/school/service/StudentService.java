@@ -6,9 +6,11 @@ import ru.hogwarts.school.dto.FacultyDtoOut;
 import ru.hogwarts.school.dto.StudentDtoIn;
 import ru.hogwarts.school.dto.StudentDtoOut;
 import ru.hogwarts.school.entity.Student;
+import ru.hogwarts.school.exception.FacultyNotFoundException;
 import ru.hogwarts.school.exception.StudentNotFoundException;
 import ru.hogwarts.school.mapper.FacultyMapper;
 import ru.hogwarts.school.mapper.StudentMapper;
+import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +21,13 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
     private final FacultyMapper facultyMapper;
+    private final FacultyRepository facultyRepository;
 
-    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, FacultyMapper facultyMapper) {
+    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, FacultyMapper facultyMapper, FacultyRepository facultyRepository) {
         this.studentRepository = studentRepository;
         this.studentMapper = studentMapper;
         this.facultyMapper = facultyMapper;
+        this.facultyRepository = facultyRepository;
     }
 
     public StudentDtoOut create(StudentDtoIn studentDtoIn) {
@@ -39,10 +43,17 @@ public class StudentService {
 
     public StudentDtoOut edit(long id, StudentDtoIn studentDtoIn) {
         return studentRepository.findById(id)
-                .map(oldFaculty -> {
-                    oldFaculty.setName(studentDtoIn.getName());
-                    oldFaculty.setAge(studentDtoIn.getAge());
-                    return studentMapper.toDto(studentRepository.save(oldFaculty));
+                .map(oldStudent -> {
+                    oldStudent.setName(studentDtoIn.getName());
+                    oldStudent.setAge(studentDtoIn.getAge());
+                    Optional.ofNullable(studentDtoIn.getFacultyId())
+                            .ifPresent(facultyId ->
+                                    oldStudent.setFaculty(
+                                            facultyRepository.findById(facultyId)
+                                    .orElseThrow(()-> new FacultyNotFoundException(facultyId))
+                                    )
+                            );
+                    return studentMapper.toDto(studentRepository.save(oldStudent));
                 }).orElseThrow(()-> new StudentNotFoundException(id));
     }
 
@@ -66,8 +77,10 @@ public class StudentService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public FacultyDtoOut findFacultyByStudentName(String studentName) {
-        return facultyMapper.toDto((studentRepository.findStudentByNameIgnoreCase(studentName)).getFaculty());
+    public FacultyDtoOut findFacultyByStudentId(long id) {
+        return studentRepository.findById(id)
+                .map(Student::getFaculty)
+                .map(facultyMapper::toDto).orElseThrow(()-> new StudentNotFoundException(id));
     }
 
 }

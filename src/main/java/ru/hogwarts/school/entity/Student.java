@@ -29,6 +29,10 @@ public class Student {
         return faculty;
     }
 
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
+
     public Student() {
 
     }

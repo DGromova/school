@@ -56,9 +56,9 @@ public class StudentController {
         return studentService.findAllByAgeBetween(ageFrom, ageTo);
     }
 
-    @GetMapping("/facultyByStudentName")
-    public FacultyDtoOut findFacultyByStudentName(@RequestParam String name) {
-        return studentService.findFacultyByStudentName(name);
+    @GetMapping("{id}/faculty")
+    public FacultyDtoOut findFacultyByStudentName(@PathVariable("id") long id) {
+        return studentService.findFacultyByStudentId(id);
     }
 
 }

@@ -55,9 +55,7 @@ public class FacultyController {
     }
 
     @GetMapping("/students")
-    public List<StudentDtoOut> findStudentsByFaculty(String name) {
-        return facultyService.findStudentsByFaculty(name);
+    public List<StudentDtoOut> findStudentsByFacultyId(long id) {
+        return facultyService.findStudentsByFacultyId(id);
     }
-
-
 }
