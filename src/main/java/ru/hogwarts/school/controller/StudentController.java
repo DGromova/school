@@ -2,10 +2,14 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.dto.FacultyDtoOut;
+import ru.hogwarts.school.dto.StudentDtoIn;
+import ru.hogwarts.school.dto.StudentDtoOut;
+import ru.hogwarts.school.exception.StudentNotFoundException;
+import ru.hogwarts.school.entity.Faculty;
+import ru.hogwarts.school.entity.Student;
 import ru.hogwarts.school.repository.StudentRepository;
-import ru.hogwarts.school.service.StudentServiceImpl;
+import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,64 +18,47 @@ import java.util.List;
 @RequestMapping("/student")
 public class StudentController {
 
-    private final StudentServiceImpl studentServiceImpl;
+    private final StudentService studentService;
     private final StudentRepository studentRepository;
 
-    public StudentController(StudentServiceImpl studentServiceImpl, StudentRepository studentRepository) {
-        this.studentServiceImpl = studentServiceImpl;
+    public StudentController(StudentService studentService, StudentRepository studentRepository) {
+        this.studentService = studentService;
         this.studentRepository = studentRepository;
     }
 
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        Student createdStudent = studentServiceImpl.createStudent(student);
-        return ResponseEntity.ok(createdStudent);
+    public StudentDtoOut create(@RequestBody StudentDtoIn studentDtoIn) {
+        return studentService.create(studentDtoIn);
     }
 
-    @GetMapping("{studentId}")
-    public ResponseEntity<Student> findStudent(@PathVariable Long studentId) {
-        Student student = studentServiceImpl.findStudentById(studentId);
-        if(student == null) {
-            return ResponseEntity.notFound() .build();
-        }
-        return ResponseEntity.ok(student);
+    @GetMapping("/{id}")
+    public StudentDtoOut find(@PathVariable long id) {
+        return studentService.find(id);
     }
 
-    @GetMapping("age/{studentsAge}")
-    public ResponseEntity<Collection> getStudentsByAge(@PathVariable int studentsAge) {
-        List<Student> studentsByAge = studentServiceImpl.getStudentsByAge(studentsAge);
-        if(studentsByAge.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(studentsByAge);
+    @PutMapping("/{id}")
+    public StudentDtoOut edit(@PathVariable long id, @RequestBody StudentDtoIn studentDtoIn) {
+        return studentService.edit(id, studentDtoIn);
     }
 
-    @GetMapping("age/{min}/{max}")
-    public ResponseEntity<Collection> findStudentsByAgeBetween(@PathVariable int min, @PathVariable int max) {
-        return ResponseEntity.ok(studentRepository.findByAgeBetween(min, max));
+    @DeleteMapping("/{id}")
+    public StudentDtoOut delete(@PathVariable long id) {
+        return studentService.delete(id);
     }
 
-    @GetMapping
-    public ResponseEntity<Collection> findAll() {
-        return ResponseEntity.ok(studentRepository.findAll());
+    @GetMapping()
+    public List<StudentDtoOut> findAll(@RequestParam(required = false) Integer age) {
+        return studentService.findAll(age);
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity findFacultyByStudentName(@PathVariable String name) {
-        return ResponseEntity.ok(studentServiceImpl.findFacultyByStudentName(name));
+        @GetMapping("/range")
+    public  List<StudentDtoOut> findByAgeBetween(@RequestParam int ageFrom, @RequestParam int ageTo) {
+        return studentService.findAllByAgeBetween(ageFrom, ageTo);
     }
 
-
-    @PutMapping()
-    public ResponseEntity<Student> editStudent(@RequestBody Student student) {
-        Student editedStudent = studentServiceImpl.editStudent(student);
-        return ResponseEntity.ok(editedStudent);
-    }
-
-    @DeleteMapping("{studentId}")
-    public ResponseEntity deleteStudent(@PathVariable Long studentId) {
-        studentServiceImpl.deleteStudent(studentId);
-        return ResponseEntity.ok().build();
+    @GetMapping("/facultyByStudentName")
+    public FacultyDtoOut findFacultyByStudentName(@RequestParam String name) {
+        return studentService.findFacultyByStudentName(name);
     }
 
 }

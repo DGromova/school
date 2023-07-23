@@ -1,4 +1,4 @@
-package ru.hogwarts.school.model;
+package ru.hogwarts.school.entity;
 
 import jakarta.persistence.*;
 
@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Faculty {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String color;
@@ -22,7 +22,6 @@ public class Faculty {
         this.name = name;
         this.color = color;
     }
-
 
     public Faculty() {
 
@@ -74,4 +73,7 @@ public class Faculty {
                 '}';
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
 }
