@@ -29,18 +29,18 @@ public class FacultyController {
         return facultyService.create(facultyDtoIn);
     }
 
-    @GetMapping
-    public FacultyDtoOut find(@RequestParam long id) {
+    @GetMapping("/{id}")
+    public FacultyDtoOut find(@PathVariable long id) {
         return facultyService.find(id);
     }
 
-    @PutMapping()
-    public FacultyDtoOut edit(@RequestParam long id, @RequestBody FacultyDtoIn facultyDtoIn) {
+    @PutMapping("/{id}")
+    public FacultyDtoOut edit(@PathVariable long id, @RequestBody FacultyDtoIn facultyDtoIn) {
         return facultyService.edit(id, facultyDtoIn);
     }
 
-    @DeleteMapping
-    public FacultyDtoOut delete(@RequestParam long id) {
+    @DeleteMapping("/{id}")
+    public FacultyDtoOut delete(@PathVariable long id) {
         return facultyService.delete(id);
     }
 

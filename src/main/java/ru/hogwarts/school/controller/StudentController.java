@@ -46,7 +46,7 @@ public class StudentController {
         return studentService.delete(id);
     }
 
-    @GetMapping()
+    @GetMapping
     public List<StudentDtoOut> findAll(@RequestParam(required = false) Integer age) {
         return studentService.findAll(age);
     }

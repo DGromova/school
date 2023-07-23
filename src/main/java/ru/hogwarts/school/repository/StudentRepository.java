@@ -9,11 +9,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     List<Student> findAllByAgeBetween(int min, int max);
 
-    List<Student> findAll(String name);
+    List<Student> findAll();
 
     List<Student> findAllByAge(int age);
 
     Student findStudentByNameIgnoreCase(String name);
-
 
 }

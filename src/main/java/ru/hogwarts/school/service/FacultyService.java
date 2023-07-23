@@ -64,7 +64,9 @@ public class FacultyService {
 
 
     public List<FacultyDtoOut> findByNameOrColor(String nameOrColor) {
-        return (facultyRepository.findAllByNameContainingIgnoreCaseOrColorContainingIgnoreCase(nameOrColor, nameOrColor)
+        return (facultyRepository.findAllByNameContainingIgnoreCaseOrColorContainingIgnoreCase(
+                nameOrColor,
+                nameOrColor)
                 .stream()
                 .map(facultyMapper::toDto)
                 .collect(Collectors.toUnmodifiableList()));
