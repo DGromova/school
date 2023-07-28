@@ -25,16 +25,16 @@ public class Student {
         this.age = age;
     }
 
+    public Student() {
+
+    }
+
     public Faculty getFaculty() {
         return faculty;
     }
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
-    }
-
-    public Student() {
-
     }
 
     public Long getId() {

@@ -1,15 +1,11 @@
 package ru.hogwarts.school.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.dto.FacultyDtoIn;
 import ru.hogwarts.school.dto.FacultyDtoOut;
 import ru.hogwarts.school.dto.StudentDtoOut;
-import ru.hogwarts.school.entity.Faculty;
-import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.service.FacultyService;
 
-import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -17,11 +13,9 @@ import java.util.List;
 public class FacultyController {
 
     private final FacultyService facultyService;
-    private final FacultyRepository facultyRepository;
 
-    public FacultyController(FacultyService facultyService, FacultyRepository facultyRepository) {
+    public FacultyController(FacultyService facultyService) {
         this.facultyService = facultyService;
-        this.facultyRepository = facultyRepository;
     }
 
     @PostMapping
