@@ -13,14 +13,11 @@ import java.util.Optional;
 @Component
 public class AvatarMapper {
 
-    private final AvatarRepository avatarRepository;
-
     private final StudentRepository studentRepository;
 
     private final StudentMapper studentMapper;
 
-    public AvatarMapper(AvatarRepository avatarRepository, StudentRepository studentRepository, StudentMapper studentMapper) {
-        this.avatarRepository = avatarRepository;
+    public AvatarMapper(StudentRepository studentRepository, StudentMapper studentMapper) {
         this.studentRepository = studentRepository;
         this.studentMapper = studentMapper;
     }
@@ -30,6 +27,7 @@ public class AvatarMapper {
         avatarDtoOut.setData(avatar.getData());
         avatarDtoOut.setFilePath(avatar.getFilePath());
         avatarDtoOut.setFileSize(avatar.getFileSize());
+        avatarDtoOut.setData(avatar.getData());
         Optional.ofNullable(avatar.getStudent())
                 .ifPresent(student -> avatarDtoOut.setStudent(studentMapper.toDto(student)));
         return avatarDtoOut;

@@ -35,7 +35,7 @@ public class AvatarService {
     }
 
     public AvatarDtoOut uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
-        Student student = studentRepository.getById(studentId);
+        Student student = studentRepository.findById(studentId).get();
         Path filePath = Path.of(avatarsDir, student + "." + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
@@ -54,6 +54,7 @@ public class AvatarService {
                     avatar.setFilePath(filePath.toString());
                     avatar.setFileSize(avatarFile.getSize());
                     avatar.setMediaType(avatarFile.getContentType());
+                    avatar.setData(avatarFile.getBytes());
                     return avatarMapper.toDto(avatarRepository.save(avatar));
                 }).orElseThrow(()-> new StudentNotFoundException(studentId));
     }

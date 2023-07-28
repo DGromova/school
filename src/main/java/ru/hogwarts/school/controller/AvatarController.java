@@ -21,7 +21,6 @@ public class AvatarController {
 
     @PostMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public AvatarDtoOut uploadAvatar(@PathVariable Long id, @RequestParam MultipartFile avatar) throws IOException {
-
         return avatarService.uploadAvatar(id, avatar);
     }
 
