@@ -19,9 +19,9 @@ public class AvatarController {
         this.avatarService = avatarService;
     }
 
-    @PostMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public AvatarDtoOut uploadAvatar(@PathVariable Long id, @RequestParam MultipartFile avatar) throws IOException {
-        return avatarService.uploadAvatar(id, avatar);
+    @PostMapping(value = "/{studentId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public AvatarDtoOut uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
+        return avatarService.uploadAvatar(studentId, avatar);
     }
 
 }

@@ -48,13 +48,17 @@ public class AvatarService {
             bis.transferTo(bos);
         }
 
-        return avatarRepository.findByStudent_Id(studentId)
+        return avatarRepository.findAvatarByStudent_Id(studentId)
                 .map(avatar -> {
                     avatar.setStudent(student);
                     avatar.setFilePath(filePath.toString());
                     avatar.setFileSize(avatarFile.getSize());
                     avatar.setMediaType(avatarFile.getContentType());
-                    avatar.setData(avatarFile.getBytes());
+                    try {
+                        avatar.setData(avatarFile.getBytes());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     return avatarMapper.toDto(avatarRepository.save(avatar));
                 }).orElseThrow(()-> new StudentNotFoundException(studentId));
     }
