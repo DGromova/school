@@ -27,8 +27,8 @@ public class StudentMapper {
         studentDtoOut.setAge(student.getAge());
         Optional.ofNullable(student.getFaculty())
                 .ifPresent(faculty -> studentDtoOut.setFaculty(facultyMapper.toDto(faculty)));
-        Optional.ofNullable(student.getAvatar())
-                .ifPresent(avatar -> studentDtoOut.setAvatarUrl(avatar.getData().toString()));
+//        Optional.ofNullable(student.g())
+//                .ifPresent(avatar -> studentDtoOut.setAvatarUrl(avatar.getData().toString()));
         return studentDtoOut;
     }
 

@@ -27,7 +27,7 @@ public class AvatarService {
     private final Path pathToAvatarDir;
 
     public AvatarService(AvatarRepository avatarRepository,
-                         @Value("./avatars") String pathToAvatarDir) {
+                         @Value("{$path.to.avatar.dir}") String pathToAvatarDir) {
         this.avatarRepository = avatarRepository;
         this.pathToAvatarDir = Path.of(pathToAvatarDir);
     }
