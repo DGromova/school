@@ -20,8 +20,8 @@ import java.util.UUID;
 @Transactional
 public class AvatarService {
 
-    @Value("Avatar")
-    private String avatarsDir;
+//    @Value("Avatar")
+//    private String avatarsDir;
 
     private final AvatarRepository avatarRepository;
     private final Path pathToAvatarDir;
@@ -39,8 +39,8 @@ public class AvatarService {
             byte[] data = multipartFile.getBytes();
             String filename = UUID.randomUUID() + "." + extension;
             Path pathToAvatar = pathToAvatarDir.resolve(filename);
-            writeToFile(pathToAvatar, data);
-            //Files.write(pathToAvatar, data);
+ //           writeToFile(pathToAvatar, data);
+            Files.write(pathToAvatar, data);
 
             Avatar avatar = avatarRepository.findByStudent_Id(student.getId())
                     .orElse(new Avatar());
