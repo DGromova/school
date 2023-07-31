@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface AvatarRepository extends JpaRepository<Avatar, Long> {
 
-   Optional<Avatar> findByStudent_Id(Long id);
+   Optional<Avatar> findById(long id);
 
    //Optional<Avatar> findAvatar(Long studentId);
    Optional< Avatar> findAvatarByStudent_Id(long studentId);

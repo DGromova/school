@@ -8,17 +8,14 @@ public class AvatarDtoOut {
     private String filePath;
     private long fileSize;
     private String mediaType;
-    private byte[] data;
-    private byte[] preview;
+//    private byte[] data;
     private StudentDtoOut student;
 
-    public AvatarDtoOut(Long id, String filePath, long fileSize, String mediaType, byte[] data, byte[] preview, StudentDtoOut student) {
+    public AvatarDtoOut(Long id, String filePath, long fileSize, String mediaType, StudentDtoOut student) {
         this.id = id;
         this.filePath = filePath;
         this.fileSize = fileSize;
         this.mediaType = mediaType;
-        this.data = data;
-        this.preview = preview;
         this.student = student;
     }
 
@@ -56,22 +53,6 @@ public class AvatarDtoOut {
 
     public void setMediaType(String mediaType) {
         this.mediaType = mediaType;
-    }
-
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData(byte[] data) {
-        this.data = data;
-    }
-
-    public byte[] getPreview() {
-        return preview;
-    }
-
-    public void setPreview(byte[] preview) {
-        this.preview = preview;
     }
 
     public StudentDtoOut getStudent() {

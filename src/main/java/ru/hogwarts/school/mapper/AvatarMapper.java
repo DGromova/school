@@ -24,10 +24,9 @@ public class AvatarMapper {
 
     public AvatarDtoOut toDto(Avatar avatar) {
         AvatarDtoOut avatarDtoOut = new AvatarDtoOut();
-        avatarDtoOut.setData(avatar.getData());
         avatarDtoOut.setFilePath(avatar.getFilePath());
         avatarDtoOut.setFileSize(avatar.getFileSize());
-        avatarDtoOut.setData(avatar.getData());
+//        avatarDtoOut.setData(avatar.getData());
         Optional.ofNullable(avatar.getStudent())
                 .ifPresent(student -> avatarDtoOut.setStudent(studentMapper.toDto(student)));
         return avatarDtoOut;
@@ -35,7 +34,7 @@ public class AvatarMapper {
 
     public Avatar toEntity(AvatarDtoIn avatarDtoIn) {
         Avatar avatar = new Avatar();
-        avatar.setData(avatarDtoIn.getData());
+//        avatar.setData(avatarDtoIn.getData());
         avatar.setFilePath(avatarDtoIn.getFilePath());
         avatar.setFileSize(avatarDtoIn.getFileSize());
         avatar.setMediaType(avatarDtoIn.getMediaType());
