@@ -56,7 +56,7 @@ public class StudentController {
     }
 
     @PatchMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public StudentDtoOut uploadAvatar(@PathVariable("id") long id, @RequestPart("avatar")MultipartFile multipartFile) {
+    public StudentDtoOut uploadAvatar(@PathVariable("id") long id, @RequestPart("avatar") MultipartFile multipartFile) {
         return studentService.uploadAvatar(id, multipartFile);
     }
 

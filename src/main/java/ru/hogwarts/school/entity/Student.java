@@ -19,6 +19,10 @@ public class Student {
     @JsonIgnore
     private Faculty faculty;
 
+    @OneToOne
+    @JoinColumn(name = "avatar_url")
+    private Avatar avatarUrl;
+
 
     public Faculty getFaculty() {
         return faculty;
@@ -50,6 +54,14 @@ public class Student {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Avatar getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(Avatar avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     @Override
