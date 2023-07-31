@@ -15,18 +15,15 @@ public class Avatar {
     private String mediaType;
     @Lob
     private byte[] data;
-
-
     @OneToOne
     private Student student;
 
-    public Avatar(Long id, String filePath, long fileSize, String mediaType, byte[] data, byte[] preview, Student student) {
+    public Avatar(Long id, String filePath, long fileSize, String mediaType, byte[] data, Student student) {
         this.id = id;
         this.filePath = filePath;
         this.fileSize = fileSize;
         this.mediaType = mediaType;
         this.data = data;
-        this.preview = preview;
         this.student = student;
     }
 
@@ -74,14 +71,6 @@ public class Avatar {
         this.data = data;
     }
 
-    public byte[] getPreview() {
-        return preview;
-    }
-
-    public void setPreview(byte[] preview) {
-        this.preview = preview;
-    }
-
     public Student getStudent() {
         return student;
     }
@@ -95,14 +84,13 @@ public class Avatar {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Avatar avatar = (Avatar) o;
-        return fileSize == avatar.fileSize && Objects.equals(id, avatar.id) && Objects.equals(filePath, avatar.filePath) && Objects.equals(mediaType, avatar.mediaType) && Arrays.equals(data, avatar.data) && Arrays.equals(preview, avatar.preview) && Objects.equals(student, avatar.student);
+        return fileSize == avatar.fileSize && Objects.equals(id, avatar.id) && Objects.equals(filePath, avatar.filePath) && Objects.equals(mediaType, avatar.mediaType) && Arrays.equals(data, avatar.data) && Objects.equals(student, avatar.student);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(id, filePath, fileSize, mediaType, student);
         result = 31 * result + Arrays.hashCode(data);
-        result = 31 * result + Arrays.hashCode(preview);
         return result;
     }
 
@@ -114,7 +102,6 @@ public class Avatar {
                 ", fileSize=" + fileSize +
                 ", mediaType='" + mediaType + '\'' +
                 ", data=" + Arrays.toString(data) +
-                ", preview=" + Arrays.toString(preview) +
                 ", student=" + student +
                 '}';
     }

@@ -2,9 +2,11 @@ package ru.hogwarts.school.service;
 
 import jakarta.annotation.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.dto.FacultyDtoOut;
 import ru.hogwarts.school.dto.StudentDtoIn;
 import ru.hogwarts.school.dto.StudentDtoOut;
+import ru.hogwarts.school.entity.Avatar;
 import ru.hogwarts.school.entity.Student;
 import ru.hogwarts.school.exception.FacultyNotFoundException;
 import ru.hogwarts.school.exception.StudentNotFoundException;
@@ -23,12 +25,14 @@ public class StudentService {
     private final StudentMapper studentMapper;
     private final FacultyMapper facultyMapper;
     private final FacultyRepository facultyRepository;
+    private final AvatarService avatarService;
 
-    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, FacultyMapper facultyMapper, FacultyRepository facultyRepository) {
+    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, FacultyMapper facultyMapper, FacultyRepository facultyRepository, AvatarService avatarService) {
         this.studentRepository = studentRepository;
         this.studentMapper = studentMapper;
         this.facultyMapper = facultyMapper;
         this.facultyRepository = facultyRepository;
+        this.avatarService = avatarService;
     }
 
     public StudentDtoOut create(StudentDtoIn studentDtoIn) {
@@ -82,6 +86,18 @@ public class StudentService {
         return studentRepository.findById(id)
                 .map(Student::getFaculty)
                 .map(facultyMapper::toDto).orElseThrow(()-> new StudentNotFoundException(id));
+    }
+
+    public StudentDtoOut uploadAvatar(long id, MultipartFile multipartFile) {
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException(id));
+        Avatar avatar = avatarService.create(student, multipartFile);
+        StudentDtoOut studentDtoOut = studentMapper.toDto(student);
+//        studentDtoOut.setAvatarUrl("http://localhost:8080/avatars/" + avatar.getId() + "/from-db");
+        return studentDtoOut;
+
+
+
     }
 
 }

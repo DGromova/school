@@ -11,6 +11,6 @@ public interface AvatarRepository extends JpaRepository<Avatar, Long> {
    Optional<Avatar> findById(long id);
 
    //Optional<Avatar> findAvatar(Long studentId);
-   Optional< Avatar> findAvatarByStudent_Id(long studentId);
+   Optional< Avatar> findByStudent_Id(long studentId);
 
 }

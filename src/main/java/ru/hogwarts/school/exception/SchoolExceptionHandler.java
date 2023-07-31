@@ -12,4 +12,10 @@ public class SchoolExceptionHandler {
     public ResponseEntity<?> handleNotFound(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+
+    @ExceptionHandler(AvatarProcessingException.class)
+    public ResponseEntity<?> handleInternalServerError(RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+
 }
