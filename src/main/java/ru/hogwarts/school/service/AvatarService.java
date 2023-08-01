@@ -39,9 +39,10 @@ public class AvatarService {
             byte[] data = multipartFile.getBytes();
             String filename = UUID.randomUUID() + "." + extension;
             Path pathToAvatar = pathToAvatarDir.resolve(filename);
+            Files.createDirectories(pathToAvatarDir);
             writeToFile(pathToAvatar, data);
 //            Files.write(pathToAvatar, data);
-            Files.createDirectories(pathToAvatarDir);
+
 
             Avatar avatar = avatarRepository.findByStudent_Id(student.getId())
                     .orElse(new Avatar());
