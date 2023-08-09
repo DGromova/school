@@ -13,3 +13,5 @@ where age < id;
 
 select * from student
 order by age;
+
+select * from faculty;

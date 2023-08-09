@@ -29,8 +29,8 @@ public class FacultyController {
     }
 
     @PutMapping("/{id}")
-    public FacultyDtoOut edit(@PathVariable long id, @RequestBody FacultyDtoIn facultyDtoIn) {
-        return facultyService.edit(id, facultyDtoIn);
+    public FacultyDtoOut update(@PathVariable long id, @RequestBody FacultyDtoIn facultyDtoIn) {
+        return facultyService.update(id, facultyDtoIn);
     }
 
     @DeleteMapping("/{id}")

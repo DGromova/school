@@ -42,7 +42,7 @@ public class FacultyService {
                 .map(facultyMapper::toDto).orElseThrow(()-> new FacultyNotFoundException(id));
     }
 
-    public FacultyDtoOut edit(Long id, FacultyDtoIn facultyDtoIn) {
+    public FacultyDtoOut update(Long id, FacultyDtoIn facultyDtoIn) {
         return facultyRepository.findById(id)
                 .map(oldFaculty -> {
                     oldFaculty.setName(facultyDtoIn.getName());
