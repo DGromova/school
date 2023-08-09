@@ -82,13 +82,6 @@ public class FacultyControllerTest {
         verify(facultyRepository, new Times(1)).save(any());
     }
 
-    private FacultyDtoIn generate() {
-        FacultyDtoIn facultyDtoIn = new FacultyDtoIn();
-        facultyDtoIn.setName(faker.harryPotter().house());
-        facultyDtoIn.setColor(faker.color().name());
-        return facultyDtoIn;
-    }
-
     @Test
     public void updateTest() throws Exception {
         FacultyDtoIn facultyDtoIn = generate();
@@ -98,7 +91,7 @@ public class FacultyControllerTest {
         oldFaculty.setName(faker.harryPotter().house());
         oldFaculty.setColor(faker.color().name());
 
-        when(facultyRepository.findById(eq(1L))).thenReturn(Optional.of(oldFaculty));
+        when(facultyRepository.findById(eq(Long.valueOf(1L)))).thenReturn(Optional.of(oldFaculty));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.put("/faculties/1")
@@ -119,7 +112,7 @@ public class FacultyControllerTest {
 
         // not found checking
 
-        when(facultyRepository.findById(eq(2L))).thenReturn(Optional.empty());
+        when(facultyRepository.findById(eq(Long.valueOf(2L)))).thenReturn(Optional.empty());
 
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/faculties/2")
@@ -132,6 +125,13 @@ public class FacultyControllerTest {
                     assertThat(responseString).isEqualTo("Факультет с id = 2 не найден!");
                 });
         verify(facultyRepository, new Times(0)).save(any());
+    }
+
+    private FacultyDtoIn generate() {
+        FacultyDtoIn facultyDtoIn = new FacultyDtoIn();
+        facultyDtoIn.setName(faker.harryPotter().house());
+        facultyDtoIn.setColor(faker.color().name());
+        return facultyDtoIn;
     }
 
 }

@@ -16,4 +16,5 @@ public class FacultyNotFoundException extends RuntimeException {
     public String getMessage() {
         return "Факультет с id = " + id + " не найден!";
     }
+
 }
