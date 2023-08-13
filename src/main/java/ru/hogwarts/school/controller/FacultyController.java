@@ -49,7 +49,7 @@ public class FacultyController {
     }
 
     @GetMapping("/students")
-    public List<StudentDtoOut> findStudentsByFacultyId(long id) {
+    public List<StudentDtoOut> findStudentsByFacultyId(@RequestParam long id) {
         return facultyService.findStudentsByFacultyId(id);
     }
 }

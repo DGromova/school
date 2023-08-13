@@ -46,7 +46,7 @@ public class StudentService {
                 .map(studentMapper::toDto).orElseThrow(()-> new StudentNotFoundException(id));
     }
 
-    public StudentDtoOut edit(long id, StudentDtoIn studentDtoIn) {
+    public StudentDtoOut update(long id, StudentDtoIn studentDtoIn) {
         return studentRepository.findById(id)
                 .map(oldStudent -> {
                     oldStudent.setName(studentDtoIn.getName());

@@ -32,7 +32,7 @@ public class StudentController {
 
     @PutMapping("/{id}")
     public StudentDtoOut edit(@PathVariable long id, @RequestBody StudentDtoIn studentDtoIn) {
-        return studentService.edit(id, studentDtoIn);
+        return studentService.update(id, studentDtoIn);
     }
 
     @DeleteMapping("/{id}")
