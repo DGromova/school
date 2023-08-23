@@ -1,5 +1,7 @@
 package ru.hogwarts.school.dto;
 
+import java.util.Objects;
+
 public class StudentDtoOut {
 
     private long id;
@@ -47,4 +49,5 @@ public class StudentDtoOut {
     public String getAvatarUrl() {
         return avatarUrl;
     }
+
 }

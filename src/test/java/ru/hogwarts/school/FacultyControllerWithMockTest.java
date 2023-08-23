@@ -99,7 +99,7 @@ public class FacultyControllerWithMockTest {
         FacultyDtoIn facultyDtoIn = generateDto();
 
         Faculty oldFaculty = generate(1);
-        when(facultyRepository.findById(eq(Long.valueOf(1L)))).thenReturn(Optional.of(oldFaculty));
+        when(facultyRepository.findById(eq(1L))).thenReturn(Optional.of(oldFaculty));
 
         oldFaculty.setColor(facultyDtoIn.getColor());
         oldFaculty.setName(facultyDtoIn.getName());
@@ -126,7 +126,7 @@ public class FacultyControllerWithMockTest {
 
         // not found checking
 
-        when(facultyRepository.findById(eq(Long.valueOf(2L)))).thenReturn(Optional.empty());
+        when(facultyRepository.findById(eq(2L))).thenReturn(Optional.empty());
 
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/faculties/2")
@@ -144,7 +144,7 @@ public class FacultyControllerWithMockTest {
     public void findTest() throws Exception {
         Faculty faculty = generate(1);
 
-        when(facultyRepository.findById(eq(Long.valueOf(1L)))).thenReturn(Optional.of(faculty));
+        when(facultyRepository.findById(eq(1L))).thenReturn(Optional.of(faculty));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/faculties/1")
@@ -162,7 +162,7 @@ public class FacultyControllerWithMockTest {
 
         // not found checking
 
-        when(facultyRepository.findById(eq(Long.valueOf(2L)))).thenReturn(Optional.empty());
+        when(facultyRepository.findById(eq(2L))).thenReturn(Optional.empty());
 
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/faculties/2")
@@ -179,7 +179,7 @@ public class FacultyControllerWithMockTest {
     public void deleteTest() throws Exception {
         Faculty faculty = generate(1);
 
-        when(facultyRepository.findById(eq(Long.valueOf(1L)))).thenReturn(Optional.of(faculty));
+        when(facultyRepository.findById(eq(1L))).thenReturn(Optional.of(faculty));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.delete("/faculties/1")
@@ -199,7 +199,7 @@ public class FacultyControllerWithMockTest {
 
         // not found checking
 
-        when(facultyRepository.findById(eq(Long.valueOf(2L)))).thenReturn(Optional.empty());
+        when(facultyRepository.findById(eq(2L))).thenReturn(Optional.empty());
 
         mockMvc.perform(
                         MockMvcRequestBuilders.delete("/faculties/2")
@@ -394,10 +394,10 @@ public class FacultyControllerWithMockTest {
                             .forEach(index -> {
                                 StudentDtoOut studentDtoOut = studentDtoOuts.get(index);
                                 StudentDtoOut expected = expectedResult.get(index);
-                                assertThat(studentDtoOut.getId()).isEqualTo(expected.getId());
-                                assertThat(studentDtoOut.getAge()).isEqualTo(expected.getAge());
+                                assertThat(studentDtoOut.getId()).usingRecursiveComparison().isEqualTo(expected.getId());
+                                assertThat(studentDtoOut.getAge()).usingRecursiveComparison().isEqualTo(expected.getAge());
                                 assertThat(studentDtoOut.getName()).isEqualTo(expected.getName());
-                                assertThat(studentDtoOut.getFaculty()).isEqualTo(expected.getFaculty());
+                                assertThat(studentDtoOut.getFaculty()).usingRecursiveComparison().isEqualTo(expected.getFaculty());
 
                             });
                 });

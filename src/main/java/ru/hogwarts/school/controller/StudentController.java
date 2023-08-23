@@ -31,7 +31,7 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public StudentDtoOut edit(@PathVariable long id, @RequestBody StudentDtoIn studentDtoIn) {
+    public StudentDtoOut update(@PathVariable long id, @RequestBody StudentDtoIn studentDtoIn) {
         return studentService.update(id, studentDtoIn);
     }
 
@@ -50,8 +50,8 @@ public class StudentController {
         return studentService.findAllByAgeBetween(ageFrom, ageTo);
     }
 
-    @GetMapping("{id}/faculty")
-    public FacultyDtoOut findFacultyByStudentName(@PathVariable("id") long id) {
+    @GetMapping("/{id}/faculty")
+    public FacultyDtoOut findFacultyByStudentId(@PathVariable("id") long id) {
         return studentService.findFacultyByStudentId(id);
     }
 

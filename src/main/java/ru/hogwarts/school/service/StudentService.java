@@ -1,12 +1,15 @@
 package ru.hogwarts.school.service;
 
 import jakarta.annotation.Nullable;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.dto.FacultyDtoOut;
 import ru.hogwarts.school.dto.StudentDtoIn;
 import ru.hogwarts.school.dto.StudentDtoOut;
 import ru.hogwarts.school.entity.Avatar;
+import ru.hogwarts.school.entity.Faculty;
 import ru.hogwarts.school.entity.Student;
 import ru.hogwarts.school.exception.FacultyNotFoundException;
 import ru.hogwarts.school.exception.StudentNotFoundException;
@@ -77,15 +80,18 @@ public class StudentService {
     }
 
     public List<StudentDtoOut> findAllByAgeBetween(int ageFrom, int ageTo) {
-        return studentRepository.findAllByAgeBetween(ageFrom, ageTo)
-                .stream().map(studentMapper::toDto)
+        return studentRepository.findAllByAgeBetween(ageFrom, ageTo).stream()
+                .map(studentMapper::toDto)
                 .collect(Collectors.toUnmodifiableList());
     }
 
     public FacultyDtoOut findFacultyByStudentId(long id) {
-        return studentRepository.findById(id)
-                .map(Student::getFaculty)
-                .map(facultyMapper::toDto).orElseThrow(()-> new StudentNotFoundException(id));
+//        return studentRepository.findById(id)
+//                .map(Student::getFaculty)
+//                .map(facultyMapper::toDto).orElseThrow(()-> new StudentNotFoundException(id));
+        Faculty faculty = studentRepository.findById(id)
+                .map(Student::getFaculty).orElseThrow(()-> new StudentNotFoundException(id));
+        return facultyMapper.toDto(faculty);
     }
 
     public StudentDtoOut uploadAvatar(long id, MultipartFile multipartFile) {
@@ -95,9 +101,6 @@ public class StudentService {
         StudentDtoOut studentDtoOut = studentMapper.toDto(student);
         studentDtoOut.setAvatarUrl("http://localhost:8080/avatars/" + avatar.getId() + "/from-db");
         return studentDtoOut;
-
-
-
     }
 
 }
