@@ -1,12 +1,14 @@
 package ru.hogwarts.school;
 
 import com.github.javafaker.Faker;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -232,25 +234,29 @@ public class FacultyControllerTest {
     @Test
     public void findStudentsByFacultyIdTest() {
         FacultyDtoOut faculty = createTest();
-        List<StudentDtoOut> students = generateStudents(10);
-        students.get(0).setFaculty(faculty);
-        students.get(1).setFaculty(faculty);
-        long id = faculty.getId();
+        List<StudentDtoIn> students = Lists.list(generateStudent(1), generateStudent(2));
+        students.get(0).setFacultyId(faculty.getId());
+        students.get(1).setFacultyId(faculty.getId());
 
-        List<StudentDtoOut> expected = new ArrayList<>();
-        expected.add(students.get(0));
-        expected.add(students.get(1));
+        for (StudentDtoIn student : students) {
+            testRestTemplate.postForObject(
+                    "http://localhost:" + port + "/students",
+                    student,
+                    StudentDtoOut.class
+            );
+        }
 
-        ResponseEntity<List> responseEntity = testRestTemplate.exchange(
-                "http://localhost:" + port + "/faculties/students?id=" + id,
+        ResponseEntity<List<StudentDtoOut>> responseEntity = testRestTemplate.exchange(
+                "http://localhost:" + port + "/faculties/students?id=" + faculty.getId(),
                 HttpMethod.GET,
-                new HttpEntity<>(expected),
-                List.class
+                null,
+                new ParameterizedTypeReference<List<StudentDtoOut>>() {{}
+                }
         );
 
-        List studentsByFacultyId = responseEntity.getBody();
+        List<StudentDtoOut> studentsByFacultyId = responseEntity.getBody();
 
-        assertThat(studentsByFacultyId.size()).isEqualTo(expected.size());
+        assertThat(studentsByFacultyId.size()).isEqualTo(2);
         studentRepository.deleteAll();
     }
 
@@ -266,26 +272,6 @@ public class FacultyControllerTest {
         student.setName(faker.harryPotter().character());
         student.setAge(faker.random().nextInt(7, 18));
         return student;
-    }
-
-    private StudentDtoOut createStudent(long id) {
-        StudentDtoIn studentDtoIn = generateStudent(id);
-
-        StudentDtoOut studentDtoOut = testRestTemplate.postForObject(
-                "http://localhost:" + port + "/students",
-                studentDtoIn,
-                StudentDtoOut.class
-        );
-
-        return studentDtoOut;
-    }
-
-    private List<StudentDtoOut> generateStudents(int size) {
-        List<StudentDtoOut> students = Stream.iterate(1, id -> id + 1)
-                .map(this::createStudent)
-                .limit(size)
-                .toList();
-        return students;
     }
 
 }

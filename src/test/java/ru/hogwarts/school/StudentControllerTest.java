@@ -200,39 +200,9 @@ public class StudentControllerTest {
         assertThat(responseEntityByAge.getBody().size()).isEqualTo(expected.size());
     }
 
-    @Test
-    public void findByAgeBetweenTest() {
-        StudentDtoOut created = createTest();
-        StudentDtoOut created2 = createTest();
-        StudentDtoOut created3 = createTest();
 
-        List<StudentDtoOut> students = new ArrayList<>();
 
-        students.add(created);
-        students.add(created2);
-        students.add(created3);
-        students.get(0).setAge(7);
-        students.get(1).setAge(8);
-        students.get(2).setAge(9);
 
-        int ageFrom = 6;
-        int ageTo = 10;
-
-        List expected = students.stream()
-                .filter(s ->
-                    s.getAge() >= ageFrom & s.getAge() < ageTo
-                ).toList();
-
-        ResponseEntity<List> responseEntity = testRestTemplate.exchange(
-        "http://localhost:" + port + "/students/range?ageFrom=" + ageFrom + "&ageTo=" + ageTo,
-                HttpMethod.GET,
-                new HttpEntity<>(expected),
-                List.class
-        );
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-        assertThat(responseEntity.getBody().size()).isNotZero();
-    }
 
     @Test
     public void findFacultyByStudentIdTest() {

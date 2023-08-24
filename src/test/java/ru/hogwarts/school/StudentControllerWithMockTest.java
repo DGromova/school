@@ -147,7 +147,7 @@ public class StudentControllerWithMockTest {
                             StudentDtoOut.class
                     );
                     assertThat(studentDtoOut).isNotNull();
-                    assertThat(studentDtoOut.getId()).isEqualTo(1L);
+                    assertThat(studentDtoOut.getId()).isEqualTo(student.getId());
                     assertThat(studentDtoOut.getAge()).isEqualTo(student.getAge());
                     assertThat(studentDtoOut.getName()).isEqualTo(student.getName());
                 });

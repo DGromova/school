@@ -33,8 +33,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
-//@WebMvcTest(controllers = FacultyController.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class FacultyControllerWithMockTest {
@@ -47,15 +47,6 @@ public class FacultyControllerWithMockTest {
 
     @MockBean
     private StudentRepository studentRepository;
-
-//    @SpyBean
-//    private FacultyService facultyService;
-//
-//    @SpyBean
-//    private FacultyMapper facultyMapper;
-//
-//    @SpyBean
-//    private StudentMapper studentMapper;
 
     @Autowired
     private FacultyMapper facultyMapper;
@@ -99,7 +90,7 @@ public class FacultyControllerWithMockTest {
         FacultyDtoIn facultyDtoIn = generateDto();
 
         Faculty oldFaculty = generate(1);
-        when(facultyRepository.findById(eq(1L))).thenReturn(Optional.of(oldFaculty));
+        when(facultyRepository.findById(oldFaculty.getId())).thenReturn(Optional.of(oldFaculty));
 
         oldFaculty.setColor(facultyDtoIn.getColor());
         oldFaculty.setName(facultyDtoIn.getName());
@@ -144,7 +135,7 @@ public class FacultyControllerWithMockTest {
     public void findTest() throws Exception {
         Faculty faculty = generate(1);
 
-        when(facultyRepository.findById(eq(1L))).thenReturn(Optional.of(faculty));
+        when(facultyRepository.findById(faculty.getId())).thenReturn(Optional.of(faculty));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/faculties/1")
@@ -155,7 +146,7 @@ public class FacultyControllerWithMockTest {
                             FacultyDtoOut.class
                     );
                     assertThat(facultyDtoOut).isNotNull();
-                    assertThat(facultyDtoOut.getId()).isEqualTo(1L);
+                    assertThat(facultyDtoOut.getId()).isEqualTo(faculty.getId());
                     assertThat(facultyDtoOut.getColor()).isEqualTo(faculty.getColor());
                     assertThat(facultyDtoOut.getName()).isEqualTo(faculty.getName());
                 });
@@ -179,7 +170,7 @@ public class FacultyControllerWithMockTest {
     public void deleteTest() throws Exception {
         Faculty faculty = generate(1);
 
-        when(facultyRepository.findById(eq(1L))).thenReturn(Optional.of(faculty));
+        when(facultyRepository.findById(faculty.getId())).thenReturn(Optional.of(faculty));
 
         mockMvc.perform(
                         MockMvcRequestBuilders.delete("/faculties/1")

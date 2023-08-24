@@ -37,8 +37,8 @@ public class StudentMapper {
         student.setAge(studentDtoIn.getAge());
         student.setName(studentDtoIn.getName());
         Optional.ofNullable(studentDtoIn.getFacultyId())
-                .ifPresent(facultyId -> facultyRepository.findById(facultyId)
-                        .orElseThrow(() -> new FacultyNotFoundException(facultyId)));
+                .ifPresent(facultyId -> student.setFaculty(facultyRepository.findById(facultyId)
+                        .orElseThrow(() -> new FacultyNotFoundException(facultyId))));
         return student;
     }
 
