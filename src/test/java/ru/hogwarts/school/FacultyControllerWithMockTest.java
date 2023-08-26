@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.Times;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -21,8 +21,12 @@ import ru.hogwarts.school.entity.Faculty;
 import ru.hogwarts.school.entity.Student;
 import ru.hogwarts.school.mapper.FacultyMapper;
 import ru.hogwarts.school.mapper.StudentMapper;
+import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
+import ru.hogwarts.school.service.AvatarService;
+import ru.hogwarts.school.service.FacultyService;
+import ru.hogwarts.school.service.StudentService;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +39,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest
 public class FacultyControllerWithMockTest {
 
     @Autowired
@@ -47,11 +50,19 @@ public class FacultyControllerWithMockTest {
 
     @MockBean
     private StudentRepository studentRepository;
+    @MockBean
+    private AvatarRepository avatarRepository;
+    @SpyBean
+    private FacultyService facultyService;
+    @SpyBean
+    private StudentService studentService;
+    @SpyBean
+    private AvatarService avatarService;
 
-    @Autowired
+    @SpyBean
     private FacultyMapper facultyMapper;
 
-    @Autowired
+    @SpyBean
     private StudentMapper studentMapper;
 
     @Autowired
