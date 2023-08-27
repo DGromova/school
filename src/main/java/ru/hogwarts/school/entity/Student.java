@@ -19,9 +19,8 @@ public class Student {
     @JsonIgnore
     private Faculty faculty;
 
-//    @OneToOne
-//    @JoinColumn(name = "avatar_url")
-//    private Avatar avatar;
+    @OneToOne(mappedBy = "student")
+    private Avatar avatar;
 
 
     public Faculty getFaculty() {
@@ -56,13 +55,13 @@ public class Student {
         this.age = age;
     }
 
-//    public Avatar getAvatar() {
-//        return avatar;
-//    }
-//
-//    public void setAvatar(Avatar avatar) {
-//        this.avatar = avatar;
-//    }
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
+    }
 
     @Override
     public boolean equals(Object o) {

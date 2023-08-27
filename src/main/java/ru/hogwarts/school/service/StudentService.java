@@ -1,9 +1,9 @@
 package ru.hogwarts.school.service;
 
 import jakarta.annotation.Nullable;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.dto.FacultyDtoOut;
 import ru.hogwarts.school.dto.StudentDtoIn;
@@ -13,10 +13,12 @@ import ru.hogwarts.school.entity.Faculty;
 import ru.hogwarts.school.entity.Student;
 import ru.hogwarts.school.exception.FacultyNotFoundException;
 import ru.hogwarts.school.exception.StudentNotFoundException;
+import ru.hogwarts.school.mapper.AvatarMapper;
 import ru.hogwarts.school.mapper.FacultyMapper;
 import ru.hogwarts.school.mapper.StudentMapper;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,13 +31,15 @@ public class StudentService {
     private final FacultyMapper facultyMapper;
     private final FacultyRepository facultyRepository;
     private final AvatarService avatarService;
+    private final AvatarMapper avatarMapper;
 
-    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, FacultyMapper facultyMapper, FacultyRepository facultyRepository, AvatarService avatarService) {
+    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper, FacultyMapper facultyMapper, FacultyRepository facultyRepository, AvatarService avatarService, AvatarMapper avatarMapper) {
         this.studentRepository = studentRepository;
         this.studentMapper = studentMapper;
         this.facultyMapper = facultyMapper;
         this.facultyRepository = facultyRepository;
         this.avatarService = avatarService;
+        this.avatarMapper = avatarMapper;
     }
 
     public StudentDtoOut create(StudentDtoIn studentDtoIn) {
@@ -99,8 +103,22 @@ public class StudentService {
                 .orElseThrow(() -> new StudentNotFoundException(id));
         Avatar avatar = avatarService.create(student, multipartFile);
         StudentDtoOut studentDtoOut = studentMapper.toDto(student);
-        studentDtoOut.setAvatarUrl("http://localhost:8080/avatars/" + avatar.getId() + "/from-db");
+        studentDtoOut.setAvatar(avatarMapper.toDto(avatar));
         return studentDtoOut;
+    }
+
+    public long getStudentsCount() {
+        return studentRepository.getStudentsCount();
+    }
+
+    public float getStudentsAverageAge() {
+        return studentRepository.getStudentsAverageAge();
+    }
+
+    @Transactional(readOnly = true)
+    public List<StudentDtoOut> getLastStudents(int count) {
+        return studentRepository.getLastStudents(Pageable.ofSize(count)).stream()
+                .map(studentMapper::toDto).collect(Collectors.toUnmodifiableList());
     }
 
 }

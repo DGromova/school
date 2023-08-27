@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.dto.FacultyDtoOut;
 import ru.hogwarts.school.dto.StudentDtoIn;
 import ru.hogwarts.school.dto.StudentDtoOut;
+import ru.hogwarts.school.entity.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.List;
@@ -58,6 +59,22 @@ public class StudentController {
     @PatchMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public StudentDtoOut uploadAvatar(@PathVariable("id") long id, @RequestPart("avatar") MultipartFile multipartFile) {
         return studentService.uploadAvatar(id, multipartFile);
+    }
+
+    @GetMapping("/count")
+    public long getStudentsCount() {
+        return studentService.getStudentsCount();
+    }
+
+    @GetMapping("averageAge")
+    public float getStudentsAverageAge()
+    {
+        return studentService.getStudentsAverageAge();
+    }
+
+    @GetMapping("/lastStudents")
+    public List<StudentDtoOut> getLastStudents(@RequestParam(value = "count", defaultValue = "5", required = false) int count) {
+        return studentService.getLastStudents(Math.abs(count));
     }
 
 }
