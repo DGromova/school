@@ -1,6 +1,8 @@
 package ru.hogwarts.school.service;
 
 import jakarta.annotation.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +27,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
-
+    private static final Logger LOG = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
     private final FacultyMapper facultyMapper;
@@ -43,17 +45,20 @@ public class StudentService {
     }
 
     public StudentDtoOut create(StudentDtoIn studentDtoIn) {
+        LOG.info("Was invoked method for create student");
         return studentMapper.toDto(
                 studentRepository.save(
                         studentMapper.toEntity(studentDtoIn)));
     }
 
     public StudentDtoOut find(long id) {
+        LOG.info("Was invoked method for find student with id = {}", id);
         return studentRepository.findById(id)
                 .map(studentMapper::toDto).orElseThrow(()-> new StudentNotFoundException(id));
     }
 
     public StudentDtoOut update(long id, StudentDtoIn studentDtoIn) {
+        LOG.info("Was invoked method for update student with id = {}", id);
         return studentRepository.findById(id)
                 .map(oldStudent -> {
                     oldStudent.setName(studentDtoIn.getName());
@@ -70,12 +75,14 @@ public class StudentService {
     }
 
     public StudentDtoOut delete(long id) {
+        LOG.info("Was invoked method for delete student with id = {}", id);
         Student student = studentRepository.findById(id).orElseThrow(()-> new StudentNotFoundException(id));
         studentRepository.delete(student);
         return studentMapper.toDto(student);
     }
 
     public List<StudentDtoOut> findAll(@Nullable Integer age) {
+        LOG.info("Was invoked method for find all students or find students by age");
         return Optional.ofNullable(age).
                 map(a -> studentRepository.findAllByAge(a))
                 .orElseGet(studentRepository::findAll).stream()
@@ -84,21 +91,21 @@ public class StudentService {
     }
 
     public List<StudentDtoOut> findAllByAgeBetween(int ageFrom, int ageTo) {
+        LOG.info("Was invoked method for find students by age between {} and {}", ageFrom, ageTo);
         return studentRepository.findAllByAgeBetween(ageFrom, ageTo).stream()
                 .map(studentMapper::toDto)
                 .collect(Collectors.toUnmodifiableList());
     }
 
     public FacultyDtoOut findFacultyByStudentId(long id) {
-//        return studentRepository.findById(id)
-//                .map(Student::getFaculty)
-//                .map(facultyMapper::toDto).orElseThrow(()-> new StudentNotFoundException(id));
+        LOG.info("Was invoked method for find faculty by student id = {}", id);
         Faculty faculty = studentRepository.findById(id)
                 .map(Student::getFaculty).orElseThrow(()-> new StudentNotFoundException(id));
         return facultyMapper.toDto(faculty);
     }
 
     public StudentDtoOut uploadAvatar(long id, MultipartFile multipartFile) {
+        LOG.info("Was invoked method for upload avatar with id = {}", id);
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
         Avatar avatar = avatarService.create(student, multipartFile);
@@ -108,10 +115,12 @@ public class StudentService {
     }
 
     public long getStudentsCount() {
+        LOG.info("Was invoked method for get count of students");
         return studentRepository.getStudentsCount();
     }
 
     public float getStudentsAverageAge() {
+        LOG.info("Was invoked method for get student's average age");
         return studentRepository.getStudentsAverageAge();
     }
 

@@ -48,8 +48,6 @@ public class AvatarService {
             Path pathToAvatar = pathToAvatarDir.resolve(filename);
             Files.createDirectories(pathToAvatarDir);
             writeToFile(pathToAvatar, data);
-//            Files.write(pathToAvatar, data);
-
 
             Avatar avatar = avatarRepository.findByStudent_Id(student.getId())
                     .orElse(new Avatar());

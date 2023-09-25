@@ -1,5 +1,7 @@
 package ru.hogwarts.school.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +18,7 @@ import java.util.List;
 public class StudentController {
 
     private final StudentService studentService;
+    private static final Logger LOG = LoggerFactory.getLogger(StudentController.class);
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
@@ -33,7 +36,7 @@ public class StudentController {
 
     @PutMapping("/{id}")
     public StudentDtoOut update(@PathVariable long id, @RequestBody StudentDtoIn studentDtoIn) {
-        return studentService.update(id, studentDtoIn);
+            return studentService.update(id, studentDtoIn);
     }
 
     @DeleteMapping("/{id}")
