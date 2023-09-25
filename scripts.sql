@@ -15,3 +15,7 @@ select * from student
 order by age;
 
 select * from faculty;
+
+select * from cars;
+
+select * from owners;
