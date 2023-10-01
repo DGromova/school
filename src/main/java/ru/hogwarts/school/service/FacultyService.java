@@ -12,9 +12,11 @@ import ru.hogwarts.school.mapper.StudentMapper;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class FacultyService {
@@ -81,5 +83,21 @@ public class FacultyService {
                 .map(studentMapper::toDto)
                 .collect(Collectors.toUnmodifiableList());
     }
+
+    public String getLongestFacultyName() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length)).get();
+    }
+
+    public Integer getSum() {
+        //int sum = Stream.iterate(1, a -> a +1) .limit(1_000_000) .reduce(0, (a, b) -> a + b );
+        return Stream.iterate(1, i -> i < 1_000_001, i -> i+1)
+                .parallel()
+                .mapToInt(i -> i).sum();
+    }
+
+
+
 
 }

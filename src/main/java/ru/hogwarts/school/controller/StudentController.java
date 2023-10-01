@@ -80,4 +80,14 @@ public class StudentController {
         return studentService.getLastStudents(Math.abs(count));
     }
 
+    @GetMapping("/namesStartsWithG")
+    public List<String> getStudentsNamesStartsWithG() {
+        return studentService.getStudentsNamesStartsWithG();
+    }
+
+    @GetMapping("/medianAge")
+    public double getStudentsMedianAge() {
+        return studentService.getStudentsMedianAge();
+    }
+
 }

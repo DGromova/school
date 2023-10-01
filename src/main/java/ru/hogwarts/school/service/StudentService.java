@@ -22,6 +22,7 @@ import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -129,5 +130,23 @@ public class StudentService {
         return studentRepository.getLastStudents(Pageable.ofSize(count)).stream()
                 .map(studentMapper::toDto).collect(Collectors.toUnmodifiableList());
     }
+
+
+    public List<String> getStudentsNamesStartsWithG() {
+        return studentRepository.findAll().stream()
+                .parallel()
+                .map(Student::getName)
+                .filter(name -> name.startsWith("G") || name.startsWith("g"))
+                .map(name -> name.toUpperCase())
+                .sorted()
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    public double getStudentsMedianAge() {
+        return studentRepository.findAll().stream()
+                .mapToDouble(Student::getAge)
+                .average().getAsDouble();
+    }
+
 
 }
