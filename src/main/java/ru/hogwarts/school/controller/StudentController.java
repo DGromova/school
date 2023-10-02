@@ -90,4 +90,19 @@ public class StudentController {
         return studentService.getStudentsMedianAge();
     }
 
+    @GetMapping("/namesList")
+    public List<String> namesList() {
+        return studentService.namesList();
+    }
+
+    @GetMapping("/names")
+    public  void getNames() {
+        studentService.getNames();
+    }
+
+    @GetMapping("/namesInOrder")
+    public  void getNamesInOrder() {
+        studentService.getNamesInOrder();
+    }
+
 }
