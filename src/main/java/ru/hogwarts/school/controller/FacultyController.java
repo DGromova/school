@@ -52,4 +52,14 @@ public class FacultyController {
     public List<StudentDtoOut> findStudentsByFacultyId(@RequestParam long id) {
         return facultyService.findStudentsByFacultyId(id);
     }
+
+    @GetMapping("/longestFacultyName")
+    public String getLongestFacultyName() {
+        return facultyService.getLongestFacultyName();
+    }
+
+    @GetMapping("/sum")
+    public Integer getSum() {
+        return facultyService.getSum();
+    }
 }

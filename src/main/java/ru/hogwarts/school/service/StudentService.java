@@ -21,6 +21,8 @@ import ru.hogwarts.school.mapper.StudentMapper;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
+import javax.lang.model.element.Name;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -128,6 +130,79 @@ public class StudentService {
     public List<StudentDtoOut> getLastStudents(int count) {
         return studentRepository.getLastStudents(Pageable.ofSize(count)).stream()
                 .map(studentMapper::toDto).collect(Collectors.toUnmodifiableList());
+    }
+
+
+    public List<String> getStudentsNamesStartsWithG() {
+        return studentRepository.findAll().stream()
+                .parallel()
+                .map(Student::getName)
+                .filter(name -> name.startsWith("G") || name.startsWith("g"))
+                .map(name -> name.toUpperCase())
+                .sorted()
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    public double getStudentsMedianAge() {
+        return studentRepository.findAll().stream()
+                .mapToDouble(Student::getAge)
+                .average().getAsDouble();
+    }
+
+    public List<String> namesList() {
+        return studentRepository.findAll().stream()
+                .map(Student::getName).toList();
+    }
+
+
+    public void getNames() {
+
+        printName(0);
+        printName(1);
+
+        new Thread(() -> {
+            printName(2);
+            printName(3);
+        }).start();
+
+        new Thread(() -> {
+            printName(4);
+            printName(5);
+        }).start();
+    }
+
+    public void printName(int index) {
+        List<String> names = studentRepository.findAll().stream()
+                .map(Student::getName)
+                .toList();
+        System.out.println(names.get(index));
+    }
+
+
+
+    public Object name = new Object();
+    public void getNamesInOrder() {
+        printNameInOrder(0);
+        printNameInOrder(1);
+
+        new Thread(() -> {
+            printNameInOrder(2);
+            printNameInOrder(3);
+        }).start();
+
+        new Thread(() -> {
+            printNameInOrder(4);
+            printNameInOrder(5);
+        }).start();
+    }
+
+    public void printNameInOrder(int index) {
+        synchronized (name) {
+            List<String> names = studentRepository.findAll().stream()
+                    .map(Student::getName)
+                    .toList();
+            System.out.println(names.get(index));
+        }
     }
 
 }
